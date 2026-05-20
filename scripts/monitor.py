@@ -18,6 +18,7 @@ DATA_DIR = ROOT / "data"
 SNAPSHOT_DIR = DATA_DIR / "snapshots"
 STATE_PATH = DATA_DIR / "state.json"
 REPORT_PATH = ROOT / "REPORT.md"
+MONTHLY_STATS_PATH = DATA_DIR / "monthly_stats.json"
 MSK = timezone(timedelta(hours=3))
 
 LIST_URL = "https://team.vk.company/vacancy/?specialty=287"
@@ -63,6 +64,10 @@ CANONICAL_STACK.update(
         "vue": "Vue",
     }
 )
+
+
+class SiteContractError(RuntimeError):
+    pass
 
 
 def now_iso() -> str:
@@ -111,11 +116,23 @@ def extract_next_data(page_html: str) -> dict:
         flags=re.S,
     )
     if not match:
-        raise RuntimeError("Could not find __NEXT_DATA__ in vacancy list page")
-    return json.loads(html.unescape(match.group(1)))
+        vacancy_links = sorted(set(re.findall(r"/vacancy/(\d+)/", page_html)))
+        raise SiteContractError(
+            "Could not find __NEXT_DATA__ in vacancy list page. "
+            f"HTML still contains {len(vacancy_links)} vacancy links."
+        )
+    try:
+        return json.loads(html.unescape(match.group(1)))
+    except json.JSONDecodeError as exc:
+        raise SiteContractError(f"Could not parse __NEXT_DATA__ JSON: {exc}") from exc
 
 
 def normalize_list_vacancy(item: dict) -> dict:
+    if not isinstance(item, dict):
+        raise SiteContractError(f"Vacancy item must be an object, got {type(item).__name__}")
+    if not item.get("id") or not item.get("title"):
+        raise SiteContractError(f"Vacancy item missing id/title: {item!r}")
+
     vacancy_id = str(item["id"])
     tags = [tag["name"] for tag in item.get("tags") or [] if tag.get("name")]
     return {
@@ -169,9 +186,24 @@ def enrich_vacancy(vacancy: dict) -> dict:
 def load_current_vacancies() -> tuple[list[dict], int]:
     page_html = fetch(LIST_URL)
     data = extract_next_data(page_html)
-    page_props = data["props"]["pageProps"]
-    vacancies = [normalize_list_vacancy(item) for item in page_props["initialVacancies"]]
-    return vacancies, int(page_props.get("initialTotalCount") or len(vacancies))
+    try:
+        page_props = data["props"]["pageProps"]
+        raw_vacancies = page_props["initialVacancies"]
+    except KeyError as exc:
+        raise SiteContractError(f"Expected Next.js pageProps key is missing: {exc}") from exc
+
+    if not isinstance(raw_vacancies, list):
+        raise SiteContractError("Expected pageProps.initialVacancies to be a list")
+
+    vacancies = [normalize_list_vacancy(item) for item in raw_vacancies]
+    total = page_props.get("initialTotalCount", len(vacancies))
+    if not isinstance(total, int):
+        raise SiteContractError("Expected pageProps.initialTotalCount to be an integer")
+    if total != len(vacancies):
+        raise SiteContractError(
+            f"Expected all vacancies to be present in initialVacancies, got {len(vacancies)} of {total}"
+        )
+    return vacancies, total
 
 
 def update_state(current: list[dict]) -> tuple[dict, list[dict], list[dict]]:
@@ -233,6 +265,42 @@ def days_between(start: str, end: str) -> int:
     return max(0, (end_dt - start_dt).days)
 
 
+def month_key(timestamp: str) -> str:
+    if not timestamp:
+        return "unknown"
+    return timestamp[:7]
+
+
+def build_monthly_stats(state: dict) -> dict:
+    monthly = {}
+    for vacancy in state.get("vacancies", {}).values():
+        first_seen_month = month_key(vacancy.get("first_seen", ""))
+        monthly.setdefault(first_seen_month, {"new": 0, "closed": 0, "active_end": 0})
+        monthly[first_seen_month]["new"] += 1
+
+        closed_at = vacancy.get("closed_at")
+        if closed_at:
+            closed_month = month_key(closed_at)
+            monthly.setdefault(closed_month, {"new": 0, "closed": 0, "active_end": 0})
+            monthly[closed_month]["closed"] += 1
+
+    runs_by_month = {}
+    for run in state.get("runs", []):
+        runs_by_month[month_key(run.get("checked_at", ""))] = run
+
+    for month, run in runs_by_month.items():
+        monthly.setdefault(month, {"new": 0, "closed": 0, "active_end": 0})
+        monthly[month]["active_end"] = run.get("active_count", 0)
+
+    return dict(sorted(monthly.items(), reverse=True))
+
+
+def write_monthly_stats(state: dict) -> dict:
+    monthly = build_monthly_stats(state)
+    save_json(MONTHLY_STATS_PATH, monthly)
+    return monthly
+
+
 def write_snapshot(current: list[dict], total: int) -> None:
     save_json(
         SNAPSHOT_DIR / f"{today()}.json",
@@ -258,6 +326,7 @@ def write_report(state: dict) -> None:
     newest = sorted(active, key=lambda vacancy: vacancy.get("first_seen", ""), reverse=True)[:10]
     runs = state.get("runs", [])
     last_run = runs[-1] if runs else {}
+    monthly = write_monthly_stats(state)
 
     lines = [
         "# VK Frontend Vacancy Monitor",
@@ -266,9 +335,25 @@ def write_report(state: dict) -> None:
         f"Active vacancies: **{len(active)}**",
         f"Closed since monitoring started: **{len(closed)}**",
         "",
-        "## Newest active vacancies",
+        "## Monthly dynamics",
         "",
+        "| Month | New | Closed | Active at last check |",
+        "| --- | ---: | ---: | ---: |",
     ]
+
+    for month, stats in list(monthly.items())[:18]:
+        lines.append(
+            f"| {month} | {stats.get('new', 0)} | {stats.get('closed', 0)} | "
+            f"{stats.get('active_end', 0)} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Newest active vacancies",
+            "",
+        ]
+    )
 
     if newest:
         for vacancy in newest:
@@ -380,35 +465,69 @@ def send_telegram_photo(photo_path: str, caption: str) -> None:
         response.read()
 
 
+def github_run_url() -> str:
+    server_url = os.environ.get("GITHUB_SERVER_URL")
+    repository = os.environ.get("GITHUB_REPOSITORY")
+    run_id = os.environ.get("GITHUB_RUN_ID")
+    if server_url and repository and run_id:
+        return f"{server_url}/{repository}/actions/runs/{run_id}"
+    return ""
+
+
+def send_failure_alert(exc: Exception) -> None:
+    if isinstance(exc, SiteContractError):
+        title = "VK vacancy monitor: изменилась структура сайта"
+    else:
+        title = "VK vacancy monitor: ошибка запуска"
+
+    message = (
+        f"{title}\n\n"
+        f"Время: {now_iso()}\n"
+        f"Страница: {LIST_URL}\n"
+        f"Ошибка: {type(exc).__name__}: {exc}"
+    )
+    run_url = github_run_url()
+    if run_url:
+        message += f"\nGitHub Actions: {run_url}"
+    try:
+        send_telegram(message[:3900])
+    except Exception as alert_exc:
+        print(f"Could not send Telegram failure alert: {alert_exc}", file=sys.stderr)
+
+
 def main() -> int:
     DATA_DIR.mkdir(exist_ok=True)
     SNAPSHOT_DIR.mkdir(parents=True, exist_ok=True)
 
-    current, total = load_current_vacancies()
-    write_snapshot(current, total)
-    state, new_vacancies, closed_vacancies = update_state(current)
-    write_report(state)
+    try:
+        current, total = load_current_vacancies()
+        write_snapshot(current, total)
+        state, new_vacancies, closed_vacancies = update_state(current)
+        write_report(state)
 
-    message = telegram_message(new_vacancies, closed_vacancies)
-    send_telegram(message)
-    if message:
-        send_telegram_photo(
-            os.environ.get("SCREENSHOT_PATH", ""),
-            f"Скриншот страницы VK Frontend на {now_iso()}",
-        )
+        message = telegram_message(new_vacancies, closed_vacancies)
+        send_telegram(message)
+        if message:
+            send_telegram_photo(
+                os.environ.get("SCREENSHOT_PATH", ""),
+                f"Скриншот страницы VK Frontend на {now_iso()}",
+            )
 
-    print(
-        json.dumps(
-            {
-                "active": len(current),
-                "new": len(new_vacancies),
-                "closed": len(closed_vacancies),
-                "notified": bool(message and os.environ.get("TELEGRAM_BOT_TOKEN")),
-            },
-            ensure_ascii=False,
+        print(
+            json.dumps(
+                {
+                    "active": len(current),
+                    "new": len(new_vacancies),
+                    "closed": len(closed_vacancies),
+                    "notified": bool(message and os.environ.get("TELEGRAM_BOT_TOKEN")),
+                },
+                ensure_ascii=False,
+            )
         )
-    )
-    return 0
+        return 0
+    except Exception as exc:
+        send_failure_alert(exc)
+        raise
 
 
 if __name__ == "__main__":
