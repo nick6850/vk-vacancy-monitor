@@ -20,16 +20,32 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install screenshot tooling
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+
+      - name: Capture vacancy page screenshot
+        env:
+          SCREENSHOT_PATH: data/latest-page.png
+        run: npm run screenshot
+
       - name: Check vacancies
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SCREENSHOT_PATH: data/latest-page.png
         run: python scripts/monitor.py
 
       - name: Commit updated data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data REPORT.md
+          git add data REPORT.md package-lock.json
           git diff --cached --quiet || git commit -m "Update VK vacancy snapshot"
           git push

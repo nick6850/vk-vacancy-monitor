@@ -6,11 +6,14 @@
 - сохраняет ежедневный снимок в `data/snapshots`;
 - ведет историю в `data/state.json`;
 - обновляет краткий отчет `REPORT.md`;
-- присылает Telegram-уведомление, если появились или закрылись вакансии.
+- присылает Telegram-уведомление, если появились или закрылись вакансии;
+- прикладывает к уведомлению полный скриншот страницы вакансий.
 
 ## Как это работает бесплатно
 
 GitHub Actions запускает `scripts/monitor.py` по расписанию. Скрипт использует только стандартную библиотеку Python, поэтому ничего платного и внешних Python-пакетов не нужно.
+
+Скриншот делает Playwright в GitHub Actions. Это тоже бесплатно в рамках GitHub Actions, отдельный хостинг или сервер не нужен.
 
 ## Одноразовая настройка
 
@@ -43,6 +46,15 @@ python3 scripts/monitor.py
 ```
 
 Если переменные `TELEGRAM_BOT_TOKEN` и `TELEGRAM_CHAT_ID` не заданы, скрипт просто обновит данные и отчет без уведомления.
+
+Локально скриншот можно сделать так:
+
+```bash
+npm install
+npx playwright install chromium
+SCREENSHOT_PATH=data/latest-page.png npm run screenshot
+SCREENSHOT_PATH=data/latest-page.png python3 scripts/monitor.py
+```
 
 ## Что смотреть
 

@@ -8,6 +8,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -336,6 +337,49 @@ def send_telegram(message: str) -> None:
         response.read()
 
 
+def send_telegram_photo(photo_path: str, caption: str) -> None:
+    token = os.environ.get("TELEGRAM_BOT_TOKEN")
+    chat_id = os.environ.get("TELEGRAM_CHAT_ID")
+    if not token or not chat_id or not photo_path:
+        return
+
+    path = Path(photo_path)
+    if not path.exists():
+        return
+
+    boundary = f"----vk-vacancy-monitor-{uuid.uuid4().hex}"
+    body = bytearray()
+
+    def add_field(name: str, value: str) -> None:
+        body.extend(f"--{boundary}\r\n".encode())
+        body.extend(f'Content-Disposition: form-data; name="{name}"\r\n\r\n'.encode())
+        body.extend(value.encode("utf-8"))
+        body.extend(b"\r\n")
+
+    add_field("chat_id", chat_id)
+    add_field("caption", caption[:1024])
+
+    body.extend(f"--{boundary}\r\n".encode())
+    body.extend(
+        (
+            f'Content-Disposition: form-data; name="photo"; filename="{path.name}"\r\n'
+            "Content-Type: image/png\r\n\r\n"
+        ).encode()
+    )
+    body.extend(path.read_bytes())
+    body.extend(b"\r\n")
+    body.extend(f"--{boundary}--\r\n".encode())
+
+    request = urllib.request.Request(
+        f"https://api.telegram.org/bot{token}/sendPhoto",
+        data=bytes(body),
+        method="POST",
+        headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
+    )
+    with urllib.request.urlopen(request, timeout=60) as response:
+        response.read()
+
+
 def main() -> int:
     DATA_DIR.mkdir(exist_ok=True)
     SNAPSHOT_DIR.mkdir(parents=True, exist_ok=True)
@@ -347,6 +391,11 @@ def main() -> int:
 
     message = telegram_message(new_vacancies, closed_vacancies)
     send_telegram(message)
+    if message:
+        send_telegram_photo(
+            os.environ.get("SCREENSHOT_PATH", ""),
+            f"Скриншот страницы VK Frontend на {now_iso()}",
+        )
 
     print(
         json.dumps(

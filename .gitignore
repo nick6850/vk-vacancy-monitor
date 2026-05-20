@@ -1,4 +1,6 @@
 .DS_Store
 __pycache__/
+node_modules/
 *.pyc
 .env
+data/latest-page.png
