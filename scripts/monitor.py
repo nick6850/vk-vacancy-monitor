@@ -74,6 +74,10 @@ def now_iso() -> str:
     return datetime.now(MSK).replace(microsecond=0).isoformat()
 
 
+def now_msk() -> datetime:
+    return datetime.now(MSK).replace(microsecond=0)
+
+
 def today() -> str:
     return datetime.now(MSK).strftime("%Y-%m-%d")
 
@@ -265,6 +269,15 @@ def days_between(start: str, end: str) -> int:
     return max(0, (end_dt - start_dt).days)
 
 
+def parse_iso(timestamp: str) -> datetime | None:
+    if not timestamp:
+        return None
+    try:
+        return datetime.fromisoformat(timestamp)
+    except ValueError:
+        return None
+
+
 def month_key(timestamp: str) -> str:
     if not timestamp:
         return "unknown"
@@ -299,6 +312,95 @@ def write_monthly_stats(state: dict) -> dict:
     monthly = build_monthly_stats(state)
     save_json(MONTHLY_STATS_PATH, monthly)
     return monthly
+
+
+def count_recent(vacancies: list[dict], field: str, since: datetime) -> int:
+    total = 0
+    for vacancy in vacancies:
+        timestamp = parse_iso(vacancy.get(field, ""))
+        if timestamp and timestamp >= since:
+            total += 1
+    return total
+
+
+def top_counts(values: list[str], limit: int = 4) -> str:
+    counts = {}
+    for value in values:
+        if value:
+            counts[value] = counts.get(value, 0) + 1
+    if not counts:
+        return "-"
+    items = sorted(counts.items(), key=lambda item: (-item[1], item[0].lower()))[:limit]
+    return ", ".join(f"{name} {count}" for name, count in items)
+
+
+def active_stack_summary(active: list[dict], limit: int = 6) -> str:
+    values = []
+    for vacancy in active:
+        values.extend(vacancy.get("stack", []))
+    return top_counts(values, limit=limit)
+
+
+def short_vacancy(vacancy: dict) -> str:
+    title = vacancy.get("title", "").strip()
+    project = vacancy.get("project", "").strip()
+    city = vacancy.get("city", "").strip()
+    parts = [part for part in [title, project, city] if part]
+    return " / ".join(parts)
+
+
+def list_summary(title: str, vacancies: list[dict], limit: int = 3) -> list[str]:
+    if not vacancies:
+        return [f"{title}: нет"]
+    lines = [f"{title}:"]
+    for vacancy in vacancies[:limit]:
+        lines.append(f"- {short_vacancy(vacancy)}")
+    if len(vacancies) > limit:
+        lines.append(f"- ...и еще {len(vacancies) - limit}")
+    return lines
+
+
+def telegram_digest_message(state: dict, new_vacancies: list[dict], closed_vacancies: list[dict]) -> str:
+    vacancies = list(state.get("vacancies", {}).values())
+    active = [vacancy for vacancy in vacancies if vacancy.get("status") == "active"]
+    now = now_msk()
+    week_start = now - timedelta(days=7)
+    month_start = now.replace(day=1, hour=0, minute=0, second=0)
+
+    week_new = count_recent(vacancies, "first_seen", week_start)
+    week_closed = count_recent(vacancies, "closed_at", week_start)
+    month_new = count_recent(vacancies, "first_seen", month_start)
+    month_closed = count_recent(vacancies, "closed_at", month_start)
+
+    lines = [
+        f"VK Frontend radar — {now.strftime('%d.%m.%Y')}",
+        "",
+        f"Активно сейчас: {len(active)}",
+        f"За 7 дней: +{week_new} новых, -{week_closed} закрытых",
+        f"За месяц: +{month_new} новых, -{month_closed} закрытых",
+        f"Проекты: {top_counts([vacancy.get('project', '') for vacancy in active])}",
+        f"Форматы: {top_counts([vacancy.get('work_format', '') for vacancy in active], limit=3)}",
+        f"Стек: {active_stack_summary(active)}",
+        "",
+        *list_summary("Новые с прошлого запуска", new_vacancies),
+        *list_summary("Закрылись с прошлого запуска", closed_vacancies),
+        "",
+        "История: https://github.com/nick6850/vk-vacancy-monitor/blob/main/REPORT.md",
+    ]
+
+    message = "\n".join(lines)
+    if len(message) <= 1000:
+        return message
+    compact_lines = [
+        lines[0],
+        "",
+        *lines[2:8],
+        "",
+        f"Новые с прошлого запуска: {len(new_vacancies)}",
+        f"Закрылись с прошлого запуска: {len(closed_vacancies)}",
+        "История: https://github.com/nick6850/vk-vacancy-monitor/blob/main/REPORT.md",
+    ]
+    return "\n".join(compact_lines)[:1000]
 
 
 def write_snapshot(current: list[dict], total: int) -> None:
@@ -407,15 +509,6 @@ def should_send_test_notification() -> bool:
     return os.environ.get("SEND_TEST_NOTIFICATION", "").lower() in {"1", "true", "yes", "on"}
 
 
-def telegram_test_message(active_count: int) -> str:
-    return (
-        "Тест VK vacancy monitor\n\n"
-        f"Бот подключен, GitHub Actions secrets работают.\n"
-        f"Активных frontend-вакансий сейчас: {active_count}\n"
-        f"Отчет: https://github.com/nick6850/vk-vacancy-monitor/blob/main/REPORT.md"
-    )
-
-
 def send_telegram(message: str) -> None:
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
     chat_id = os.environ.get("TELEGRAM_CHAT_ID")
@@ -518,15 +611,12 @@ def main() -> int:
         state, new_vacancies, closed_vacancies = update_state(current)
         write_report(state)
 
-        message = telegram_message(new_vacancies, closed_vacancies)
+        message = telegram_digest_message(state, new_vacancies, closed_vacancies)
         if should_send_test_notification():
-            message = "\n\n".join(part for part in [telegram_test_message(len(current)), message] if part)
-        send_telegram(message)
-        if message:
-            send_telegram_photo(
-                os.environ.get("SCREENSHOT_PATH", ""),
-                f"Скриншот страницы VK Frontend на {now_iso()}",
-            )
+            message = "Тестовый запуск\n\n" + message
+        send_telegram_photo(os.environ.get("SCREENSHOT_PATH", ""), message)
+        if not os.environ.get("SCREENSHOT_PATH"):
+            send_telegram(message)
 
         print(
             json.dumps(
