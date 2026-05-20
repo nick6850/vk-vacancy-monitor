@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: "15 7 * * *"
   workflow_dispatch:
+    inputs:
+      send_test:
+        description: "Send a Telegram test notification even if nothing changed"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -40,6 +46,7 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           SCREENSHOT_PATH: data/latest-page.png
+          SEND_TEST_NOTIFICATION: ${{ inputs.send_test }}
         run: python scripts/monitor.py
 
       - name: Commit updated data

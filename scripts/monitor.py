@@ -403,6 +403,19 @@ def telegram_message(new_vacancies: list[dict], closed_vacancies: list[dict]) ->
     return "\n".join(parts).strip()
 
 
+def should_send_test_notification() -> bool:
+    return os.environ.get("SEND_TEST_NOTIFICATION", "").lower() in {"1", "true", "yes", "on"}
+
+
+def telegram_test_message(active_count: int) -> str:
+    return (
+        "Тест VK vacancy monitor\n\n"
+        f"Бот подключен, GitHub Actions secrets работают.\n"
+        f"Активных frontend-вакансий сейчас: {active_count}\n"
+        f"Отчет: https://github.com/nick6850/vk-vacancy-monitor/blob/main/REPORT.md"
+    )
+
+
 def send_telegram(message: str) -> None:
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
     chat_id = os.environ.get("TELEGRAM_CHAT_ID")
@@ -506,6 +519,8 @@ def main() -> int:
         write_report(state)
 
         message = telegram_message(new_vacancies, closed_vacancies)
+        if should_send_test_notification():
+            message = "\n\n".join(part for part in [telegram_test_message(len(current)), message] if part)
         send_telegram(message)
         if message:
             send_telegram_photo(
