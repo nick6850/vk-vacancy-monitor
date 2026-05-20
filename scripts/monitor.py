@@ -349,12 +349,20 @@ def short_vacancy(vacancy: dict) -> str:
     return " / ".join(parts)
 
 
+def short_vacancy_link(vacancy: dict) -> str:
+    title = vacancy.get("title", "").strip()
+    project = vacancy.get("project", "").strip()
+    url = vacancy.get("url", "").strip()
+    label = f"{title} — {project}" if project else title
+    return f"{label}: {url}" if url else label
+
+
 def list_summary(title: str, vacancies: list[dict], limit: int = 3) -> list[str]:
     if not vacancies:
         return [f"{title}: нет"]
     lines = [f"{title}:"]
     for vacancy in vacancies[:limit]:
-        lines.append(f"- {short_vacancy(vacancy)}")
+        lines.append(f"- {short_vacancy_link(vacancy)}")
     if len(vacancies) > limit:
         lines.append(f"- ...и еще {len(vacancies) - limit}")
     return lines
@@ -372,20 +380,22 @@ def telegram_digest_message(state: dict, new_vacancies: list[dict], closed_vacan
     month_new = count_recent(vacancies, "first_seen", month_start)
     month_closed = count_recent(vacancies, "closed_at", month_start)
 
+    month_name = now.strftime("%m.%Y")
+
     lines = [
-        f"VK Frontend radar — {now.strftime('%d.%m.%Y')}",
+        f"Твой дайджест VK Frontend на эту неделю — {now.strftime('%d.%m.%Y')}",
         "",
-        f"Активно сейчас: {len(active)}",
-        f"За 7 дней: +{week_new} новых, -{week_closed} закрытых",
-        f"За месяц: +{month_new} новых, -{month_closed} закрытых",
-        f"Проекты: {top_counts([vacancy.get('project', '') for vacancy in active])}",
-        f"Форматы: {top_counts([vacancy.get('work_format', '') for vacancy in active], limit=3)}",
-        f"Стек: {active_stack_summary(active)}",
+        f"Открытых вакансий сейчас: {len(active)}",
+        f"За неделю: новых {week_new}, закрытых {week_closed}",
+        f"За месяц ({month_name}): новых {month_new}, закрытых {month_closed}",
+        f"Где чаще ищут: {top_counts([vacancy.get('project', '') for vacancy in active])}",
+        f"Формат работы: {top_counts([vacancy.get('work_format', '') for vacancy in active], limit=3)}",
+        f"Стек в активных вакансиях: {active_stack_summary(active)}",
         "",
-        *list_summary("Новые с прошлого запуска", new_vacancies),
-        *list_summary("Закрылись с прошлого запуска", closed_vacancies),
+        *list_summary("Новые вакансии с прошлого дайджеста", new_vacancies),
+        *list_summary("Закрылись с прошлого дайджеста", closed_vacancies),
         "",
-        "История: https://github.com/nick6850/vk-vacancy-monitor/blob/main/REPORT.md",
+        "Полная история и график: https://github.com/nick6850/vk-vacancy-monitor/blob/main/REPORT.md",
     ]
 
     message = "\n".join(lines)
@@ -396,9 +406,9 @@ def telegram_digest_message(state: dict, new_vacancies: list[dict], closed_vacan
         "",
         *lines[2:8],
         "",
-        f"Новые с прошлого запуска: {len(new_vacancies)}",
-        f"Закрылись с прошлого запуска: {len(closed_vacancies)}",
-        "История: https://github.com/nick6850/vk-vacancy-monitor/blob/main/REPORT.md",
+        f"Новые с прошлого дайджеста: {len(new_vacancies)}",
+        f"Закрылись с прошлого дайджеста: {len(closed_vacancies)}",
+        "Полная история: https://github.com/nick6850/vk-vacancy-monitor/blob/main/REPORT.md",
     ]
     return "\n".join(compact_lines)[:1000]
 
