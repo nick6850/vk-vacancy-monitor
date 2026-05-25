@@ -39,7 +39,7 @@ jobs:
       - name: Capture vacancy page screenshot
         env:
           SCREENSHOT_PATH: data/latest-page.png
-        run: npm run screenshot
+        run: npm run screenshot || echo "Screenshot failed; continuing with text-only Telegram digest"
 
       - name: Check vacancies
         env:

@@ -1,14 +1,14 @@
 # VK Frontend Vacancy Monitor
 
-Last check: `2026-05-21T00:32:50+03:00`
-Active vacancies: **10**
-Closed since monitoring started: **0**
+Last check: `2026-05-26T02:39:24+03:00`
+Active vacancies: **7**
+Closed since monitoring started: **3**
 
 ## Monthly dynamics
 
 | Month | New | Closed | Active at last check |
 | --- | ---: | ---: | ---: |
-| 2026-05 | 10 | 0 | 10 |
+| 2026-05 | 10 | 3 | 7 |
 
 ## Newest active vacancies
 
@@ -17,11 +17,8 @@ Closed since monitoring started: **0**
 - [Frontend-разработчик](https://team.vk.company/vacancy/45397/) — MAX, Санкт-Петербург, комбинированный; stack: CSS, JavaScript, React, TypeScript
 - [Frontend-разработчик](https://team.vk.company/vacancy/45402/) — Сервисы продуктивности VK Tech, Москва, гибкий; stack: Frontend, Git, React, TypeScript
 - [Старший Frontend-разработчик](https://team.vk.company/vacancy/45442/) — VK, Москва, гибкий; stack: CSS, REST, TypeScript, Vite, Vue
-- [Frontend-разработчик в команду операций](https://team.vk.company/vacancy/45443/) — Mail, Москва, гибкий; stack: CI/CD, CSS, Git, HTML, JavaScript, Jest, React, React Testing Library
 - [Senior Frontend-разработчик](https://team.vk.company/vacancy/45521/) — MAX, Москва, дистанционный; stack: CI/CD, CSS, CSS-in-JS, Git, HTML, JavaScript, Jest, Lighthouse
 - [Разработчик интерфейсов](https://team.vk.company/vacancy/45526/) — Дзен, Москва, комбинированный; stack: CI/CD, CSS, JavaScript, React, Redux, TypeScript, Webpack
-- [Frontend-разработчик](https://team.vk.company/vacancy/45552/) — VK, Москва, гибкий; stack: Frontend, React, Redux
-- [Старший frontend-разработчик](https://team.vk.company/vacancy/45581/) — VK, Москва, гибкий; stack: CSS, Frontend, React, REST, TypeScript, Vite
 
 ## Stack frequency
 
@@ -43,4 +40,6 @@ Closed since monitoring started: **0**
 
 ## Recently closed
 
-- No closed vacancies yet.
+- Frontend-разработчик в команду операций — Mail; open for 5 days
+- Frontend-разработчик — VK; open for 5 days
+- Старший frontend-разработчик — VK; open for 5 days

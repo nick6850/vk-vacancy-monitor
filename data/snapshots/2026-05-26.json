@@ -1,0 +1,89 @@
+{
+  "checked_at": "2026-05-26T02:39:24+03:00",
+  "source": "https://team.vk.company/vacancy/?specialty=287",
+  "total": 7,
+  "vacancies": [
+    {
+      "city": "Москва",
+      "id": "45526",
+      "project": "Дзен",
+      "tags": [
+        "javascript"
+      ],
+      "title": "Разработчик интерфейсов",
+      "url": "https://team.vk.company/vacancy/45526/",
+      "work_format": "комбинированный"
+    },
+    {
+      "city": "Москва",
+      "id": "44817",
+      "project": "MAX",
+      "tags": [
+        "react",
+        "redux",
+        "typescript"
+      ],
+      "title": "Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/44817/",
+      "work_format": "гибкий"
+    },
+    {
+      "city": "Москва",
+      "id": "45158",
+      "project": "MAX",
+      "tags": [
+        "javascript",
+        "react"
+      ],
+      "title": "Senior Frontend разработчик",
+      "url": "https://team.vk.company/vacancy/45158/",
+      "work_format": "дистанционный"
+    },
+    {
+      "city": "Москва",
+      "id": "45442",
+      "project": "VK",
+      "tags": [
+        "vue.js"
+      ],
+      "title": "Старший Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/45442/",
+      "work_format": "гибкий"
+    },
+    {
+      "city": "Москва",
+      "id": "45521",
+      "project": "MAX",
+      "tags": [
+        "react"
+      ],
+      "title": "Senior Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/45521/",
+      "work_format": "дистанционный"
+    },
+    {
+      "city": "Москва",
+      "id": "45402",
+      "project": "Сервисы продуктивности VK Tech",
+      "tags": [
+        "frontend",
+        "react"
+      ],
+      "title": "Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/45402/",
+      "work_format": "гибкий"
+    },
+    {
+      "city": "Санкт-Петербург",
+      "id": "45397",
+      "project": "MAX",
+      "tags": [
+        "javascript",
+        "react"
+      ],
+      "title": "Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/45397/",
+      "work_format": "комбинированный"
+    }
+  ]
+}

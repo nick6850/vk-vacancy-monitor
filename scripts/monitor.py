@@ -538,15 +538,15 @@ def send_telegram(message: str) -> None:
         response.read()
 
 
-def send_telegram_photo(photo_path: str, caption: str) -> None:
+def send_telegram_photo(photo_path: str, caption: str) -> bool:
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
     chat_id = os.environ.get("TELEGRAM_CHAT_ID")
     if not token or not chat_id or not photo_path:
-        return
+        return False
 
     path = Path(photo_path)
     if not path.exists():
-        return
+        return False
 
     boundary = f"----vk-vacancy-monitor-{uuid.uuid4().hex}"
     body = bytearray()
@@ -579,6 +579,7 @@ def send_telegram_photo(photo_path: str, caption: str) -> None:
     )
     with urllib.request.urlopen(request, timeout=60) as response:
         response.read()
+    return True
 
 
 def github_run_url() -> str:
@@ -624,9 +625,19 @@ def main() -> int:
         message = telegram_digest_message(state, new_vacancies, closed_vacancies)
         if should_send_test_notification():
             message = "Тестовый запуск\n\n" + message
-        send_telegram_photo(os.environ.get("SCREENSHOT_PATH", ""), message)
-        if not os.environ.get("SCREENSHOT_PATH"):
-            send_telegram(message)
+
+        screenshot_path = os.environ.get("SCREENSHOT_PATH", "")
+        photo_sent = False
+        try:
+            photo_sent = send_telegram_photo(screenshot_path, message)
+        except Exception as exc:
+            print(f"Could not send Telegram screenshot: {exc}", file=sys.stderr)
+
+        if not photo_sent:
+            fallback_message = message
+            if screenshot_path:
+                fallback_message += "\n\nСкриншот не приложился: шаг скриншота не создал файл или Telegram не принял картинку."
+            send_telegram(fallback_message)
 
         print(
             json.dumps(
