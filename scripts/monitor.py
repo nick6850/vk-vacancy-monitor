@@ -278,6 +278,15 @@ def parse_iso(timestamp: str) -> datetime | None:
         return None
 
 
+def tracking_started_at(state: dict) -> datetime | None:
+    timestamps = [
+        parsed
+        for run in state.get("runs", [])
+        if (parsed := parse_iso(run.get("checked_at", "")))
+    ]
+    return min(timestamps) if timestamps else None
+
+
 def month_key(timestamp: str) -> str:
     if not timestamp:
         return "unknown"
@@ -286,10 +295,13 @@ def month_key(timestamp: str) -> str:
 
 def build_monthly_stats(state: dict) -> dict:
     monthly = {}
+    baseline_at = tracking_started_at(state)
     for vacancy in state.get("vacancies", {}).values():
-        first_seen_month = month_key(vacancy.get("first_seen", ""))
-        monthly.setdefault(first_seen_month, {"new": 0, "closed": 0, "active_end": 0})
-        monthly[first_seen_month]["new"] += 1
+        first_seen = parse_iso(vacancy.get("first_seen", ""))
+        if first_seen and (not baseline_at or first_seen > baseline_at):
+            first_seen_month = month_key(vacancy.get("first_seen", ""))
+            monthly.setdefault(first_seen_month, {"new": 0, "closed": 0, "active_end": 0})
+            monthly[first_seen_month]["new"] += 1
 
         closed_at = vacancy.get("closed_at")
         if closed_at:
@@ -314,11 +326,16 @@ def write_monthly_stats(state: dict) -> dict:
     return monthly
 
 
-def count_recent(vacancies: list[dict], field: str, since: datetime) -> int:
+def count_recent(
+    vacancies: list[dict],
+    field: str,
+    since: datetime,
+    after: datetime | None = None,
+) -> int:
     total = 0
     for vacancy in vacancies:
         timestamp = parse_iso(vacancy.get(field, ""))
-        if timestamp and timestamp >= since:
+        if timestamp and timestamp >= since and (not after or timestamp > after):
             total += 1
     return total
 
@@ -374,10 +391,11 @@ def telegram_digest_message(state: dict, new_vacancies: list[dict], closed_vacan
     now = now_msk()
     week_start = now - timedelta(days=7)
     month_start = now.replace(day=1, hour=0, minute=0, second=0)
+    baseline_at = tracking_started_at(state)
 
-    week_new = count_recent(vacancies, "first_seen", week_start)
+    week_new = count_recent(vacancies, "first_seen", week_start, after=baseline_at)
     week_closed = count_recent(vacancies, "closed_at", week_start)
-    month_new = count_recent(vacancies, "first_seen", month_start)
+    month_new = count_recent(vacancies, "first_seen", month_start, after=baseline_at)
     month_closed = count_recent(vacancies, "closed_at", month_start)
 
     month_name = now.strftime("%m.%Y")

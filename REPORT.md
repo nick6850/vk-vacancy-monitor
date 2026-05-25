@@ -8,7 +8,7 @@ Closed since monitoring started: **3**
 
 | Month | New | Closed | Active at last check |
 | --- | ---: | ---: | ---: |
-| 2026-05 | 10 | 3 | 7 |
+| 2026-05 | 0 | 3 | 7 |
 
 ## Newest active vacancies
 
