@@ -340,6 +340,20 @@ def count_recent(
     return total
 
 
+def recent_vacancies(
+    vacancies: list[dict],
+    field: str,
+    since: datetime,
+    after: datetime | None = None,
+) -> list[dict]:
+    recent = []
+    for vacancy in vacancies:
+        timestamp = parse_iso(vacancy.get(field, ""))
+        if timestamp and timestamp >= since and (not after or timestamp > after):
+            recent.append(vacancy)
+    return sorted(recent, key=lambda vacancy: vacancy.get(field, ""), reverse=True)
+
+
 def top_counts(values: list[str], limit: int = 4) -> str:
     counts = {}
     for value in values:
@@ -397,6 +411,8 @@ def telegram_digest_message(state: dict, new_vacancies: list[dict], closed_vacan
     week_closed = count_recent(vacancies, "closed_at", week_start)
     month_new = count_recent(vacancies, "first_seen", month_start, after=baseline_at)
     month_closed = count_recent(vacancies, "closed_at", month_start)
+    week_new_vacancies = recent_vacancies(vacancies, "first_seen", week_start, after=baseline_at)
+    week_closed_vacancies = recent_vacancies(vacancies, "closed_at", week_start)
 
     month_name = now.strftime("%m.%Y")
 
@@ -410,8 +426,8 @@ def telegram_digest_message(state: dict, new_vacancies: list[dict], closed_vacan
         f"Формат работы: {top_counts([vacancy.get('work_format', '') for vacancy in active], limit=3)}",
         f"Стек в активных вакансиях: {active_stack_summary(active)}",
         "",
-        *list_summary("Новые вакансии с прошлого дайджеста", new_vacancies),
-        *list_summary("Закрылись с прошлого дайджеста", closed_vacancies),
+        *list_summary("Новые вакансии за неделю", week_new_vacancies),
+        *list_summary("Закрылись за неделю", week_closed_vacancies),
         "",
         "Полная история и график: https://github.com/nick6850/vk-vacancy-monitor/blob/main/REPORT.md",
     ]
@@ -424,8 +440,8 @@ def telegram_digest_message(state: dict, new_vacancies: list[dict], closed_vacan
         "",
         *lines[2:8],
         "",
-        f"Новые с прошлого дайджеста: {len(new_vacancies)}",
-        f"Закрылись с прошлого дайджеста: {len(closed_vacancies)}",
+        f"Новые за неделю: {len(week_new_vacancies)}",
+        f"Закрылись за неделю: {len(week_closed_vacancies)}",
         "Полная история: https://github.com/nick6850/vk-vacancy-monitor/blob/main/REPORT.md",
     ]
     return "\n".join(compact_lines)[:1000]
