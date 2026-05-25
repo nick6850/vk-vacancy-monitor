@@ -19,6 +19,7 @@ SNAPSHOT_DIR = DATA_DIR / "snapshots"
 STATE_PATH = DATA_DIR / "state.json"
 REPORT_PATH = ROOT / "REPORT.md"
 MONTHLY_STATS_PATH = DATA_DIR / "monthly_stats.json"
+VACANCY_SCREENSHOT_DIR = DATA_DIR / "vacancy-screenshots"
 MSK = timezone(timedelta(hours=3))
 
 LIST_URL = "https://team.vk.company/vacancy/?specialty=287"
@@ -616,6 +617,89 @@ def send_telegram_photo(photo_path: str, caption: str) -> bool:
     return True
 
 
+def add_multipart_field(body: bytearray, boundary: str, name: str, value: str) -> None:
+    body.extend(f"--{boundary}\r\n".encode())
+    body.extend(f'Content-Disposition: form-data; name="{name}"\r\n\r\n'.encode())
+    body.extend(value.encode("utf-8"))
+    body.extend(b"\r\n")
+
+
+def add_multipart_file(body: bytearray, boundary: str, name: str, path: Path) -> None:
+    body.extend(f"--{boundary}\r\n".encode())
+    body.extend(
+        (
+            f'Content-Disposition: form-data; name="{name}"; filename="{path.name}"\r\n'
+            "Content-Type: image/png\r\n\r\n"
+        ).encode()
+    )
+    body.extend(path.read_bytes())
+    body.extend(b"\r\n")
+
+
+def send_telegram_media_group(photo_paths: list[Path], caption: str) -> bool:
+    token = os.environ.get("TELEGRAM_BOT_TOKEN")
+    chat_id = os.environ.get("TELEGRAM_CHAT_ID")
+    paths = [path for path in photo_paths if path.exists()]
+    if not token or not chat_id or len(paths) < 2:
+        return False
+
+    boundary = f"----vk-vacancy-monitor-{uuid.uuid4().hex}"
+    body = bytearray()
+    media = []
+    for index, path in enumerate(paths[:10]):
+        field_name = f"photo{index}"
+        item = {"type": "photo", "media": f"attach://{field_name}"}
+        if index == 0:
+            item["caption"] = caption[:1024]
+        media.append(item)
+
+    add_multipart_field(body, boundary, "chat_id", chat_id)
+    add_multipart_field(body, boundary, "media", json.dumps(media, ensure_ascii=False))
+    for index, path in enumerate(paths[:10]):
+        add_multipart_file(body, boundary, f"photo{index}", path)
+    body.extend(f"--{boundary}--\r\n".encode())
+
+    request = urllib.request.Request(
+        f"https://api.telegram.org/bot{token}/sendMediaGroup",
+        data=bytes(body),
+        method="POST",
+        headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
+    )
+    with urllib.request.urlopen(request, timeout=90) as response:
+        response.read()
+    return True
+
+
+def vacancy_screenshot_path(vacancy: dict) -> Path:
+    screenshot_dir = Path(os.environ.get("VACANCY_SCREENSHOT_DIR") or VACANCY_SCREENSHOT_DIR)
+    return screenshot_dir / f"{vacancy.get('id')}.png"
+
+
+def send_digest_with_screenshots(message: str, list_screenshot_path: str, closed_week: list[dict]) -> bool:
+    photo_paths = []
+    if list_screenshot_path:
+        photo_paths.append(Path(list_screenshot_path))
+    closed_screenshots = [
+        (vacancy, path)
+        for vacancy in closed_week
+        if (path := vacancy_screenshot_path(vacancy)).exists()
+    ]
+    photo_paths.extend(path for _, path in closed_screenshots)
+    photo_paths = [path for path in photo_paths if path.exists()]
+
+    if len(photo_paths) >= 2 and len(photo_paths) <= 10:
+        return send_telegram_media_group(photo_paths, message)
+
+    if photo_paths:
+        if not send_telegram_photo(str(photo_paths[0]), message):
+            return False
+        for vacancy, path in closed_screenshots:
+            send_telegram_photo(str(path), f"Закрытая вакансия: {short_vacancy_link(vacancy)}")
+        return True
+
+    return False
+
+
 def github_run_url() -> str:
     server_url = os.environ.get("GITHUB_SERVER_URL")
     repository = os.environ.get("GITHUB_REPOSITORY")
@@ -663,9 +747,14 @@ def main() -> int:
         screenshot_path = os.environ.get("SCREENSHOT_PATH", "")
         photo_sent = False
         try:
-            photo_sent = send_telegram_photo(screenshot_path, message)
+            closed_week = recent_vacancies(
+                list(state.get("vacancies", {}).values()),
+                "closed_at",
+                now_msk() - timedelta(days=7),
+            )
+            photo_sent = send_digest_with_screenshots(message, screenshot_path, closed_week)
         except Exception as exc:
-            print(f"Could not send Telegram screenshot: {exc}", file=sys.stderr)
+            print(f"Could not send Telegram screenshots: {exc}", file=sys.stderr)
 
         if not photo_sent:
             fallback_message = message

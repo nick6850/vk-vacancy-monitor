@@ -2,7 +2,8 @@
   "name": "vk-vacancy-monitor",
   "private": true,
   "scripts": {
-    "screenshot": "node scripts/screenshot.mjs"
+    "screenshot": "node scripts/screenshot.mjs",
+    "archive-vacancy-screenshots": "node scripts/archive-vacancy-screenshots.mjs"
   },
   "devDependencies": {
     "playwright": "^1.56.0"
