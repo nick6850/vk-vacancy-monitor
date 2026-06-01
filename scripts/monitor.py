@@ -554,6 +554,14 @@ def should_send_test_notification() -> bool:
     return os.environ.get("SEND_TEST_NOTIFICATION", "").lower() in {"1", "true", "yes", "on"}
 
 
+def is_scheduled_run() -> bool:
+    return os.environ.get("GITHUB_EVENT_NAME") == "schedule"
+
+
+def digest_already_sent_today(state: dict) -> bool:
+    return state.get("last_digest_date") == today()
+
+
 def send_telegram(message: str) -> None:
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
     chat_id = os.environ.get("TELEGRAM_CHAT_ID")
@@ -740,6 +748,21 @@ def main() -> int:
         state, new_vacancies, closed_vacancies = update_state(current)
         write_report(state)
 
+        if is_scheduled_run() and digest_already_sent_today(state):
+            print(
+                json.dumps(
+                    {
+                        "active": len(current),
+                        "new": len(new_vacancies),
+                        "closed": len(closed_vacancies),
+                        "notified": False,
+                        "skipped": "digest already sent today",
+                    },
+                    ensure_ascii=False,
+                )
+            )
+            return 0
+
         message = telegram_digest_message(state, new_vacancies, closed_vacancies)
         if should_send_test_notification():
             message = "Тестовый запуск\n\n" + message
@@ -761,6 +784,10 @@ def main() -> int:
             if screenshot_path:
                 fallback_message += "\n\nСкриншот не приложился: шаг скриншота не создал файл или Telegram не принял картинку."
             send_telegram(fallback_message)
+
+        if is_scheduled_run() and not should_send_test_notification():
+            state["last_digest_date"] = today()
+            save_json(STATE_PATH, state)
 
         print(
             json.dumps(
