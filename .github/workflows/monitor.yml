@@ -1,6 +1,8 @@
 name: Monitor VK frontend vacancies
 
 on:
+  repository_dispatch:
+    types: [vk-vacancy-monitor]
   schedule:
     - cron: "15 7 * * 1"
     - cron: "15 8 * * 1"

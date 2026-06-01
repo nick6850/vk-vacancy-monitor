@@ -555,7 +555,7 @@ def should_send_test_notification() -> bool:
 
 
 def is_scheduled_run() -> bool:
-    return os.environ.get("GITHUB_EVENT_NAME") == "schedule"
+    return os.environ.get("GITHUB_EVENT_NAME") in {"schedule", "repository_dispatch"}
 
 
 def digest_already_sent_today(state: dict) -> bool:
