@@ -1,0 +1,53 @@
+{
+  "checked_at": "2026-06-01T15:49:26+03:00",
+  "source": "https://team.vk.company/vacancy/?specialty=287",
+  "total": 4,
+  "vacancies": [
+    {
+      "city": "Санкт-Петербург",
+      "id": "45397",
+      "project": "MAX",
+      "tags": [
+        "javascript",
+        "react"
+      ],
+      "title": "Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/45397/",
+      "work_format": "комбинированный"
+    },
+    {
+      "city": "Москва",
+      "id": "45526",
+      "project": "Дзен",
+      "tags": [
+        "javascript"
+      ],
+      "title": "Разработчик интерфейсов",
+      "url": "https://team.vk.company/vacancy/45526/",
+      "work_format": "комбинированный"
+    },
+    {
+      "city": "Москва",
+      "id": "45618",
+      "project": "MAX",
+      "tags": [
+        "javascript"
+      ],
+      "title": "Ведущий Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/45618/",
+      "work_format": "комбинированный"
+    },
+    {
+      "city": "Санкт-Петербург",
+      "id": "45620",
+      "project": "MAX",
+      "tags": [
+        "javascript",
+        "react"
+      ],
+      "title": "Frontend developer",
+      "url": "https://team.vk.company/vacancy/45620/",
+      "work_format": "гибкий"
+    }
+  ]
+}
