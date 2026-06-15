@@ -1,20 +1,8 @@
 {
-  "checked_at": "2026-06-15T17:36:00+03:00",
+  "checked_at": "2026-06-15T18:26:07+03:00",
   "source": "https://team.vk.company/vacancy/?specialty=287",
   "total": 2,
   "vacancies": [
-    {
-      "city": "Санкт-Петербург",
-      "id": "45620",
-      "project": "MAX",
-      "tags": [
-        "javascript",
-        "react"
-      ],
-      "title": "Frontend developer",
-      "url": "https://team.vk.company/vacancy/45620/",
-      "work_format": "гибкий"
-    },
     {
       "city": "Москва",
       "id": "45699",
@@ -27,6 +15,18 @@
       ],
       "title": "Frontend-разработчик",
       "url": "https://team.vk.company/vacancy/45699/",
+      "work_format": "гибкий"
+    },
+    {
+      "city": "Санкт-Петербург",
+      "id": "45620",
+      "project": "MAX",
+      "tags": [
+        "javascript",
+        "react"
+      ],
+      "title": "Frontend developer",
+      "url": "https://team.vk.company/vacancy/45620/",
       "work_format": "гибкий"
     }
   ]
