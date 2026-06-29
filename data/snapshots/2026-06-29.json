@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-06-29T15:07:30+03:00",
+  "source": "https://team.vk.company/vacancy/?specialty=287",
+  "total": 1,
+  "vacancies": [
+    {
+      "city": "Москва",
+      "id": "45699",
+      "project": "MAX",
+      "tags": [
+        "frontend",
+        "javascript",
+        "react",
+        "typescript"
+      ],
+      "title": "Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/45699/",
+      "work_format": "гибкий"
+    }
+  ]
+}

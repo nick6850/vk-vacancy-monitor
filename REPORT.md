@@ -1,20 +1,19 @@
 # VK Frontend Vacancy Monitor
 
-Last check: `2026-06-22T17:50:50+03:00`
-Active vacancies: **2**
-Closed since monitoring started: **11**
+Last check: `2026-06-29T15:07:30+03:00`
+Active vacancies: **1**
+Closed since monitoring started: **12**
 
 ## Monthly dynamics
 
 | Month | New | Closed | Active at last check |
 | --- | ---: | ---: | ---: |
-| 2026-06 | 3 | 8 | 2 |
+| 2026-06 | 3 | 9 | 1 |
 | 2026-05 | 0 | 3 | 7 |
 
 ## Newest active vacancies
 
 - [Frontend-разработчик](https://team.vk.company/vacancy/45699/) — MAX, Москва, гибкий; stack: Frontend, JavaScript, React, Redux, REST, TypeScript, Vite
-- [Frontend developer](https://team.vk.company/vacancy/45620/) — MAX, Санкт-Петербург, гибкий; stack: CSS, JavaScript, React, TypeScript
 
 ## Stack frequency
 
@@ -36,6 +35,7 @@ Closed since monitoring started: **11**
 
 ## Recently closed
 
+- Frontend developer — MAX; open for 27 days
 - Разработчик интерфейсов — Дзен; open for 25 days
 - Ведущий Frontend-разработчик — MAX; open for 14 days
 - Frontend-разработчик — MAX; open for 18 days
@@ -45,4 +45,3 @@ Closed since monitoring started: **11**
 - Старший Frontend-разработчик — VK; open for 11 days
 - Senior Frontend-разработчик — MAX; open for 11 days
 - Frontend-разработчик в команду операций — Mail; open for 5 days
-- Frontend-разработчик — VK; open for 5 days
