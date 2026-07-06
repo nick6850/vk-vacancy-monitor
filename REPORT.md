@@ -1,6 +1,6 @@
 # VK Frontend Vacancy Monitor
 
-Last check: `2026-07-06T14:43:30+03:00`
+Last check: `2026-07-06T15:15:59+03:00`
 Active vacancies: **2**
 Closed since monitoring started: **12**
 
