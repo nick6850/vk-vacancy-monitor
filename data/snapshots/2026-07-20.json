@@ -1,0 +1,18 @@
+{
+  "checked_at": "2026-07-20T13:20:01+03:00",
+  "source": "https://team.vk.company/vacancy/?specialty=287",
+  "total": 1,
+  "vacancies": [
+    {
+      "city": "Москва",
+      "id": "52033",
+      "project": "ВКонтакте",
+      "tags": [
+        "typescript"
+      ],
+      "title": "Старший Frontend-разработчик сообщества",
+      "url": "https://team.vk.company/vacancy/52033/",
+      "work_format": "Комбинированный"
+    }
+  ]
+}
