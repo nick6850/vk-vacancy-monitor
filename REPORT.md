@@ -1,6 +1,6 @@
 # VK Frontend Vacancy Monitor
 
-Last check: `2026-08-10T11:49:36+03:00`
+Last check: `2026-08-10T12:48:31+03:00`
 Active vacancies: **3**
 Closed since monitoring started: **13**
 
@@ -15,8 +15,8 @@ Closed since monitoring started: **13**
 
 ## Newest active vacancies
 
-- [Frontend-разработчик](https://team.vk.company/vacancy/52552/) — ВКонтакте, Москва, гибкий; stack: JavaScript, React, TypeScript, Web Vitals
 - [Старший Frontend-разработчик BI-системы](https://team.vk.company/vacancy/52444/) — Автоматизация внутренних процессов, Москва, гибкий; stack: Frontend, JavaScript, React, Redux, REST, TypeScript, Vite
+- [Frontend-разработчик](https://team.vk.company/vacancy/52552/) — ВКонтакте, Москва, гибкий; stack: JavaScript, React, TypeScript, Web Vitals
 - [Старший Frontend-разработчик сообщества](https://team.vk.company/vacancy/52033/) — ВКонтакте, Москва, Комбинированный; stack: CSS, HTML, JavaScript, React, TypeScript
 
 ## Stack frequency
