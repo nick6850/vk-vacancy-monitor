@@ -1,0 +1,40 @@
+{
+  "checked_at": "2026-08-10T11:49:36+03:00",
+  "source": "https://team.vk.company/vacancy/?specialty=287",
+  "total": 3,
+  "vacancies": [
+    {
+      "city": "Москва",
+      "id": "52033",
+      "project": "ВКонтакте",
+      "tags": [
+        "typescript"
+      ],
+      "title": "Старший Frontend-разработчик сообщества",
+      "url": "https://team.vk.company/vacancy/52033/",
+      "work_format": "Комбинированный"
+    },
+    {
+      "city": "Москва",
+      "id": "52552",
+      "project": "ВКонтакте",
+      "tags": [
+        "react"
+      ],
+      "title": "Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/52552/",
+      "work_format": "гибкий"
+    },
+    {
+      "city": "Москва",
+      "id": "52444",
+      "project": "Автоматизация внутренних процессов",
+      "tags": [
+        "frontend"
+      ],
+      "title": "Старший Frontend-разработчик BI-системы",
+      "url": "https://team.vk.company/vacancy/52444/",
+      "work_format": "гибкий"
+    }
+  ]
+}
