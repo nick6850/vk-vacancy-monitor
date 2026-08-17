@@ -1,8 +1,19 @@
 {
-  "checked_at": "2026-08-17T12:00:56+03:00",
+  "checked_at": "2026-08-17T12:58:32+03:00",
   "source": "https://team.vk.company/vacancy/?specialty=287",
   "total": 4,
   "vacancies": [
+    {
+      "city": "Москва",
+      "id": "52621",
+      "project": "MAX",
+      "tags": [
+        "frontend"
+      ],
+      "title": "Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/52621/",
+      "work_format": "гибкий"
+    },
     {
       "city": "Москва",
       "id": "52550",
@@ -25,17 +36,6 @@
       ],
       "title": "Frontend-разработчик",
       "url": "https://team.vk.company/vacancy/52648/",
-      "work_format": "гибкий"
-    },
-    {
-      "city": "Москва",
-      "id": "52621",
-      "project": "MAX",
-      "tags": [
-        "frontend"
-      ],
-      "title": "Frontend-разработчик",
-      "url": "https://team.vk.company/vacancy/52621/",
       "work_format": "гибкий"
     },
     {
