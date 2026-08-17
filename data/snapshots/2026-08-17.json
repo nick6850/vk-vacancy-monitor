@@ -1,0 +1,53 @@
+{
+  "checked_at": "2026-08-17T10:59:11+03:00",
+  "source": "https://team.vk.company/vacancy/?specialty=287",
+  "total": 4,
+  "vacancies": [
+    {
+      "city": "Москва",
+      "id": "52550",
+      "project": "Технический департамент",
+      "tags": [
+        "frontend",
+        "react"
+      ],
+      "title": "Frontend-pазработчик",
+      "url": "https://team.vk.company/vacancy/52550/",
+      "work_format": "гибкий"
+    },
+    {
+      "city": "Москва",
+      "id": "52648",
+      "project": "VK Музыка",
+      "tags": [
+        "frontend",
+        "react"
+      ],
+      "title": "Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/52648/",
+      "work_format": "гибкий"
+    },
+    {
+      "city": "Москва",
+      "id": "52621",
+      "project": "MAX",
+      "tags": [
+        "frontend"
+      ],
+      "title": "Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/52621/",
+      "work_format": "гибкий"
+    },
+    {
+      "city": "Москва",
+      "id": "52444",
+      "project": "VK",
+      "tags": [
+        "frontend"
+      ],
+      "title": "Старший Frontend-разработчик BI-системы",
+      "url": "https://team.vk.company/vacancy/52444/",
+      "work_format": "гибкий"
+    }
+  ]
+}
