@@ -1,6 +1,6 @@
 # VK Frontend Vacancy Monitor
 
-Last check: `2026-08-17T10:59:11+03:00`
+Last check: `2026-08-17T12:00:56+03:00`
 Active vacancies: **4**
 Closed since monitoring started: **15**
 
@@ -16,8 +16,8 @@ Closed since monitoring started: **15**
 ## Newest active vacancies
 
 - [Frontend-pазработчик](https://team.vk.company/vacancy/52550/) — Технический департамент, Москва, гибкий; stack: CI/CD, CSS, Frontend, Git, HTML, JavaScript, React, Redux
-- [Frontend-разработчик](https://team.vk.company/vacancy/52648/) — VK Музыка, Москва, гибкий; stack: Frontend, JavaScript, React, REST, TypeScript, Vite
 - [Frontend-разработчик](https://team.vk.company/vacancy/52621/) — MAX, Москва, гибкий; stack: Frontend, TypeScript
+- [Frontend-разработчик](https://team.vk.company/vacancy/52648/) — VK Музыка, Москва, гибкий; stack: Frontend, JavaScript, React, REST, TypeScript, Vite
 - [Старший Frontend-разработчик BI-системы](https://team.vk.company/vacancy/52444/) — VK, Москва, гибкий; stack: Frontend, JavaScript, React, Redux, REST, TypeScript, Vite
 
 ## Stack frequency
