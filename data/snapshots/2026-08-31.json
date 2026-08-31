@@ -1,0 +1,54 @@
+{
+  "checked_at": "2026-08-31T18:03:47+03:00",
+  "source": "https://team.vk.company/vacancy/?specialty=287",
+  "total": 4,
+  "vacancies": [
+    {
+      "city": "Москва",
+      "id": "52648",
+      "project": "VK Музыка",
+      "tags": [
+        "frontend",
+        "react"
+      ],
+      "title": "Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/52648/",
+      "work_format": "гибкий"
+    },
+    {
+      "city": "Москва",
+      "id": "52739",
+      "project": "ВКонтакте",
+      "tags": [
+        "javascript",
+        "typescript"
+      ],
+      "title": "Старший Frontend-разработчик в команду Core Frontend",
+      "url": "https://team.vk.company/vacancy/52739/",
+      "work_format": "гибкий"
+    },
+    {
+      "city": "Москва",
+      "id": "52281",
+      "project": "MAX",
+      "tags": [
+        "react",
+        "typescript"
+      ],
+      "title": "Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/52281/",
+      "work_format": "гибкий"
+    },
+    {
+      "city": "Москва",
+      "id": "52621",
+      "project": "MAX",
+      "tags": [
+        "frontend"
+      ],
+      "title": "Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/52621/",
+      "work_format": "гибкий"
+    }
+  ]
+}

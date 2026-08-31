@@ -1,29 +1,29 @@
 # VK Frontend Vacancy Monitor
 
-Last check: `2026-08-24T13:05:16+03:00`
+Last check: `2026-08-31T18:03:47+03:00`
 Active vacancies: **4**
-Closed since monitoring started: **16**
+Closed since monitoring started: **17**
 
 ## Monthly dynamics
 
 | Month | New | Closed | Active at last check |
 | --- | ---: | ---: | ---: |
-| 2026-08 | 6 | 3 | 4 |
+| 2026-08 | 7 | 4 | 4 |
 | 2026-07 | 1 | 1 | 1 |
 | 2026-06 | 3 | 9 | 1 |
 | 2026-05 | 0 | 3 | 7 |
 
 ## Newest active vacancies
 
+- [Frontend-разработчик](https://team.vk.company/vacancy/52281/) — MAX, Москва, гибкий; stack: React, TypeScript
 - [Старший Frontend-разработчик в команду Core Frontend](https://team.vk.company/vacancy/52739/) — ВКонтакте, Москва, гибкий; stack: JavaScript, TypeScript, Web Vitals, Webpack
-- [Frontend-pазработчик](https://team.vk.company/vacancy/52550/) — Технический департамент, Москва, гибкий; stack: CI/CD, CSS, Frontend, Git, HTML, JavaScript, React, Redux
 - [Frontend-разработчик](https://team.vk.company/vacancy/52621/) — MAX, Москва, гибкий; stack: Frontend, TypeScript
 - [Frontend-разработчик](https://team.vk.company/vacancy/52648/) — VK Музыка, Москва, гибкий; stack: Frontend, JavaScript, React, REST, TypeScript, Vite
 
 ## Stack frequency
 
-- TypeScript: 18
-- React: 16
+- TypeScript: 19
+- React: 17
 - JavaScript: 15
 - CSS: 12
 - REST: 10
@@ -40,6 +40,7 @@ Closed since monitoring started: **16**
 
 ## Recently closed
 
+- Frontend-pазработчик — Технический департамент; open for 14 days
 - Старший Frontend-разработчик BI-системы — VK; open for 13 days
 - Старший Frontend-разработчик сообщества — ВКонтакте; open for 41 days
 - Frontend-разработчик — ВКонтакте; open for 6 days
@@ -49,4 +50,3 @@ Closed since monitoring started: **16**
 - Ведущий Frontend-разработчик — MAX; open for 14 days
 - Frontend-разработчик — MAX; open for 18 days
 - Frontend-разработчик — MAX; open for 11 days
-- Senior Frontend разработчик — MAX; open for 11 days
