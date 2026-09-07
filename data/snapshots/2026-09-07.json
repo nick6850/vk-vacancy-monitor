@@ -1,8 +1,19 @@
 {
-  "checked_at": "2026-09-07T17:28:19+03:00",
+  "checked_at": "2026-09-07T18:04:44+03:00",
   "source": "https://team.vk.company/vacancy/?specialty=287",
-  "total": 4,
+  "total": 5,
   "vacancies": [
+    {
+      "city": "Санкт-Петербург",
+      "id": "52823",
+      "project": "Автоматизация внутренних процессов",
+      "tags": [
+        "frontend"
+      ],
+      "title": "Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/52823/",
+      "work_format": "гибкий"
+    },
     {
       "city": "Москва",
       "id": "52739",
