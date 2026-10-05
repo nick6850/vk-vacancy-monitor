@@ -1,0 +1,51 @@
+{
+  "checked_at": "2026-10-05T18:57:37+03:00",
+  "source": "https://team.vk.company/vacancy/?specialty=287",
+  "total": 4,
+  "vacancies": [
+    {
+      "city": "Москва",
+      "id": "54816",
+      "project": "VK Pay",
+      "tags": [
+        "frontend"
+      ],
+      "title": "Старший Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/54816/",
+      "work_format": "гибкий"
+    },
+    {
+      "city": "Санкт-Петербург",
+      "id": "54882",
+      "project": "MAX",
+      "tags": [
+        "frontend"
+      ],
+      "title": "Старший Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/54882/",
+      "work_format": "гибкий"
+    },
+    {
+      "city": "Москва",
+      "id": "54649",
+      "project": "One-cloud",
+      "tags": [
+        "frontend"
+      ],
+      "title": "Frontend-разработчик в платформу разработки",
+      "url": "https://team.vk.company/vacancy/54649/",
+      "work_format": "Комбинированный"
+    },
+    {
+      "city": "Санкт-Петербург",
+      "id": "52823",
+      "project": "Автоматизация внутренних процессов",
+      "tags": [
+        "frontend"
+      ],
+      "title": "Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/52823/",
+      "work_format": "гибкий"
+    }
+  ]
+}
