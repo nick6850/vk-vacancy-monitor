@@ -1,0 +1,40 @@
+{
+  "checked_at": "2026-10-12T19:42:11+03:00",
+  "source": "https://team.vk.company/vacancy/?specialty=287",
+  "total": 3,
+  "vacancies": [
+    {
+      "city": "Москва",
+      "id": "54920",
+      "project": "MAX",
+      "tags": [
+        "frontend"
+      ],
+      "title": "Middle Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/54920/",
+      "work_format": "гибкий"
+    },
+    {
+      "city": "Москва",
+      "id": "54649",
+      "project": "One-cloud",
+      "tags": [
+        "frontend"
+      ],
+      "title": "Frontend-разработчик в платформу разработки",
+      "url": "https://team.vk.company/vacancy/54649/",
+      "work_format": "Комбинированный"
+    },
+    {
+      "city": "Москва",
+      "id": "54816",
+      "project": "VK Pay",
+      "tags": [
+        "frontend"
+      ],
+      "title": "Старший Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/54816/",
+      "work_format": "гибкий"
+    }
+  ]
+}
