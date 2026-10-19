@@ -1,14 +1,14 @@
 # VK Frontend Vacancy Monitor
 
-Last check: `2026-10-12T22:04:46+03:00`
-Active vacancies: **3**
-Closed since monitoring started: **24**
+Last check: `2026-10-19T17:38:34+03:00`
+Active vacancies: **4**
+Closed since monitoring started: **25**
 
 ## Monthly dynamics
 
 | Month | New | Closed | Active at last check |
 | --- | ---: | ---: | ---: |
-| 2026-10 | 3 | 3 | 3 |
+| 2026-10 | 5 | 4 | 4 |
 | 2026-09 | 3 | 4 | 3 |
 | 2026-08 | 7 | 4 | 4 |
 | 2026-07 | 1 | 1 | 1 |
@@ -17,20 +17,21 @@ Closed since monitoring started: **24**
 
 ## Newest active vacancies
 
+- [Frontend-разработчик](https://team.vk.company/vacancy/54960/) — VK Видео, Санкт-Петербург, гибкий; stack: Frontend, React
+- [Frontend-разработчик](https://team.vk.company/vacancy/54967/) — VK Знакомства, Санкт-Петербург, гибкий; stack: Frontend, Git, JavaScript, React, Redux, REST, TypeScript
 - [Middle Frontend-разработчик](https://team.vk.company/vacancy/54920/) — MAX, Москва, гибкий; stack: CI/CD, CSS, CSS-in-JS, Frontend, Git, HTML, JavaScript, Jest
 - [Старший Frontend-разработчик](https://team.vk.company/vacancy/54816/) — VK Pay, Москва, гибкий; stack: CSS, Frontend, Git, React, TypeScript
-- [Frontend-разработчик в платформу разработки](https://team.vk.company/vacancy/54649/) — One-cloud, Москва, Комбинированный; stack: CSS, Frontend, HTML, React, Vite
 
 ## Stack frequency
 
-- TypeScript: 24
-- React: 21
-- JavaScript: 18
+- TypeScript: 25
+- React: 23
+- JavaScript: 19
+- Frontend: 16
 - CSS: 15
-- Frontend: 14
-- REST: 12
-- Redux: 10
-- Git: 9
+- REST: 13
+- Redux: 11
+- Git: 10
 - Vite: 9
 - HTML: 8
 - CI/CD: 6
@@ -41,6 +42,7 @@ Closed since monitoring started: **24**
 
 ## Recently closed
 
+- Frontend-разработчик в платформу разработки — One-cloud; open for 20 days
 - Frontend-разработчик — Автоматизация внутренних процессов; open for 35 days
 - Старший Frontend-разработчик — MAX; open for 7 days
 - Старший Frontend-разработчик в команду Core Frontend — ВКонтакте; open for 42 days
@@ -50,4 +52,3 @@ Closed since monitoring started: **24**
 - Frontend-разработчик — VK Музыка; open for 28 days
 - Frontend-pазработчик — Технический департамент; open for 14 days
 - Старший Frontend-разработчик BI-системы — VK; open for 13 days
-- Старший Frontend-разработчик сообщества — ВКонтакте; open for 41 days
