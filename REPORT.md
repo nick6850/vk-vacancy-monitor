@@ -1,13 +1,14 @@
 # VK Frontend Vacancy Monitor
 
-Last check: `2026-10-26T19:08:45+03:00`
-Active vacancies: **4**
+Last check: `2026-11-02T20:01:03+03:00`
+Active vacancies: **5**
 Closed since monitoring started: **25**
 
 ## Monthly dynamics
 
 | Month | New | Closed | Active at last check |
 | --- | ---: | ---: | ---: |
+| 2026-11 | 1 | 0 | 5 |
 | 2026-10 | 5 | 4 | 4 |
 | 2026-09 | 3 | 4 | 3 |
 | 2026-08 | 7 | 4 | 4 |
@@ -17,6 +18,7 @@ Closed since monitoring started: **25**
 
 ## Newest active vacancies
 
+- [Frontend-разработчик](https://team.vk.company/vacancy/55354/) — Экосистемные сервисы, Москва, гибкий; stack: CSS, Frontend, REST, TypeScript, Vite, Vue
 - [Frontend-разработчик](https://team.vk.company/vacancy/54960/) — VK Видео, Санкт-Петербург, гибкий; stack: Frontend, React
 - [Frontend-разработчик](https://team.vk.company/vacancy/54967/) — VK Знакомства, Санкт-Петербург, гибкий; stack: Frontend, Git, JavaScript, React, Redux, REST, TypeScript
 - [Middle Frontend-разработчик](https://team.vk.company/vacancy/54920/) — MAX, Москва, гибкий; stack: CI/CD, CSS, CSS-in-JS, Frontend, Git, HTML, JavaScript, Jest
@@ -24,15 +26,15 @@ Closed since monitoring started: **25**
 
 ## Stack frequency
 
-- TypeScript: 25
+- TypeScript: 26
 - React: 23
 - JavaScript: 19
-- Frontend: 16
-- CSS: 15
-- REST: 13
+- Frontend: 17
+- CSS: 16
+- REST: 14
 - Redux: 11
 - Git: 10
-- Vite: 9
+- Vite: 10
 - HTML: 8
 - CI/CD: 6
 - Webpack: 6
