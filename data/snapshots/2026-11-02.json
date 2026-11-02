@@ -1,8 +1,30 @@
 {
-  "checked_at": "2026-11-02T20:01:03+03:00",
+  "checked_at": "2026-11-02T21:22:10+03:00",
   "source": "https://team.vk.company/vacancy/?specialty=287",
   "total": 5,
   "vacancies": [
+    {
+      "city": "Москва",
+      "id": "54816",
+      "project": "VK Pay",
+      "tags": [
+        "frontend"
+      ],
+      "title": "Старший Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/54816/",
+      "work_format": "гибкий"
+    },
+    {
+      "city": "Москва",
+      "id": "54920",
+      "project": "MAX",
+      "tags": [
+        "frontend"
+      ],
+      "title": "Middle Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/54920/",
+      "work_format": "гибкий"
+    },
     {
       "city": "Санкт-Петербург",
       "id": "54967",
@@ -12,17 +34,6 @@
       ],
       "title": "Frontend-разработчик",
       "url": "https://team.vk.company/vacancy/54967/",
-      "work_format": "гибкий"
-    },
-    {
-      "city": "Москва",
-      "id": "55354",
-      "project": "Экосистемные сервисы",
-      "tags": [
-        "frontend"
-      ],
-      "title": "Frontend-разработчик",
-      "url": "https://team.vk.company/vacancy/55354/",
       "work_format": "гибкий"
     },
     {
@@ -39,24 +50,13 @@
     },
     {
       "city": "Москва",
-      "id": "54920",
-      "project": "MAX",
+      "id": "55354",
+      "project": "Экосистемные сервисы",
       "tags": [
         "frontend"
       ],
-      "title": "Middle Frontend-разработчик",
-      "url": "https://team.vk.company/vacancy/54920/",
-      "work_format": "гибкий"
-    },
-    {
-      "city": "Москва",
-      "id": "54816",
-      "project": "VK Pay",
-      "tags": [
-        "frontend"
-      ],
-      "title": "Старший Frontend-разработчик",
-      "url": "https://team.vk.company/vacancy/54816/",
+      "title": "Frontend-разработчик",
+      "url": "https://team.vk.company/vacancy/55354/",
       "work_format": "гибкий"
     }
   ]
